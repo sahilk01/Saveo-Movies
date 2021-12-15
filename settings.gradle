@@ -1,0 +1,2 @@
+rootProject.name = "Saveo Movies"
+include ':app'
