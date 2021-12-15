@@ -14,6 +14,8 @@ import com.example.saveomovies.util.handleError
 import com.example.saveomovies.util.visible
 import com.example.saveomovies.view.adapter.BannerAdapter
 import com.example.saveomovies.viewModel.HomeViewModel
+import com.yarolegovich.discretescrollview.InfiniteScrollAdapter
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,10 +23,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,11 +51,28 @@ class HomeFragment : Fragment() {
 
     private fun populateTrendingList(movies: List<Result>) {
         binding.loader.gone()
-        binding.banner.adapter = BannerAdapter(movies,
-            onClick = {
-                // TODO: Open Details Page.
+        with(binding.banner) {
+            setItemTransformer(
+                ScaleTransformer.Builder()
+                    .setMinScale(0.8f)
+                    .build()
+            )
+            val wrapper = InfiniteScrollAdapter
+                .wrap(BannerAdapter(movies, onClick = {
 
-            }
-        )
+                }))
+
+            adapter = wrapper
+        }
+////        recyclerView_id.
+//            .adapter = BannerAdapter(movies,
+//            onClick = {
+//                // TODO: Open Details Page.
+//
+//            }
+//        ).also {
+//
+//
+//        }
     }
 }
