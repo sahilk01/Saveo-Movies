@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<ImageView
-    android:id="@+id/popularMovieImage"
-    android:layout_width="match_parent"
-    android:scaleType="centerCrop"
-    tools:src="@drawable/blue_background"
-    android:layout_height="220dp"/>
+    <data>
+
+        <variable
+            name="movie"
+            type="com.example.saveomovies.model.movie.Result" />
+    </data>
+
+    <ImageView
+        android:id="@+id/popularMovieImage"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_margin="12dp"
+        android:scaleType="centerCrop"
+        app:imageUrl="@{movie.poster_path}"
+        tools:src="@drawable/blue_background" />
 
 </layout>
