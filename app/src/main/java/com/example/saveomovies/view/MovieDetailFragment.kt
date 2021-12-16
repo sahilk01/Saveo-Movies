@@ -9,7 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.saveomovies.R
 import com.example.saveomovies.databinding.FragmentMovieDetailBinding
+import com.example.saveomovies.model.Outcome
 import com.example.saveomovies.model.movieDetail.Genre
+import com.example.saveomovies.model.movieDetail.MovieDetail
+import com.example.saveomovies.util.handleError
 import com.example.saveomovies.util.showSnackBar
 import com.example.saveomovies.view.adapter.GenreAdapter
 import com.example.saveomovies.viewModel.MovieDetailViewModel
@@ -36,24 +39,26 @@ class MovieDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObservers()
         movieDetailViewModel.setMovieDetails(args.movie)
 
-        val list = listOf(
-            Genre(
-                1, "Action"
-            ),
-            Genre(
-                1, "DRAMA"
-            ),
-            Genre(
-                1, "COMEDY"
-            ),
-            Genre(
-                1, "THRILLER"
-            ),
-        )
-        showGenres(list)
+    }
 
+    private fun initObservers() {
+        movieDetailViewModel.movieDetailsFromNetwork.observe(viewLifecycleOwner) {
+            when (it) {
+                is Outcome.Failure -> {
+                }
+                is Outcome.Loading -> {
+                }
+                is Outcome.Success -> bindMovieDetailsData(it.data)
+            }
+        }
+    }
+
+    private fun bindMovieDetailsData(movieDetail: MovieDetail) {
+        binding.moveiInfo.text = movieDetail.getTimeAndReleaseDate()
+        showGenres(movieDetail.genres)
     }
 
     private fun showGenres(genres: List<Genre>) {
@@ -62,6 +67,7 @@ class MovieDetailFragment : Fragment() {
     }
 
     fun bookNow() {
-        showSnackBar("Booking Successful", binding.root)
+        showSnackBar(getString(R.string.booking_successful), binding.root)
     }
+
 }

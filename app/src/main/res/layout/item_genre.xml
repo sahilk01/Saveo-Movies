@@ -19,6 +19,7 @@
         android:textSize="10sp"
         android:background="@drawable/rounded_background"
         android:text="@{genre.name}"
+        android:layout_marginBottom="6dp"
         android:textColor="@color/white"
         android:textAllCaps="true"
         tools:text="ACTION" />

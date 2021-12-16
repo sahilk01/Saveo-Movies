@@ -3,8 +3,10 @@ package com.example.saveomovies.network
 import com.example.saveomovies.BuildConfig
 import com.example.saveomovies.model.movie.Movie
 import com.example.saveomovies.model.movie.Result
+import com.example.saveomovies.model.movieDetail.MovieDetail
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TMDBApi {
@@ -27,6 +29,16 @@ interface TMDBApi {
         @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("page") page: Int
     ): Response<Movie>
+
+    /**
+    Returns details of the passed ID.
+     */
+
+    @GET("movie/{id}")
+    suspend fun getMovieDetail(
+        @Path("id") id: Int,
+        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY
+    ): Response<MovieDetail>
 
 
 }

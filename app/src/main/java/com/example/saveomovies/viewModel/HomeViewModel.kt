@@ -9,6 +9,7 @@ import com.example.saveomovies.model.Outcome
 import com.example.saveomovies.model.movie.Result
 import com.example.saveomovies.network.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -31,7 +32,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     fun getTrendingMovies() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             homeRepository.getTrendingMovies()
         }
     }

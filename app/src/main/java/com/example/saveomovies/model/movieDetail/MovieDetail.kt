@@ -26,4 +26,14 @@ data class MovieDetail(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+) {
+    fun getTime(): String {
+        val hours = this.runtime / 60
+        val minutes = this.runtime % 60
+        return "${hours}h ${minutes}min"
+    }
+
+    fun getTimeAndReleaseDate(): String {
+        return "R | ${getTime()} | ${release_date}}"
+    }
+}
