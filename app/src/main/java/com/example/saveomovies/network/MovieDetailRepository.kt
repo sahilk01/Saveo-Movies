@@ -20,7 +20,7 @@ class MovieDetailRepository @Inject constructor(
         get() = _movieDetail
 
     suspend fun getMovieDetails(id: Int) {
-        _movieDetail.postValue(Outcome.Loading())f
+        _movieDetail.postValue(Outcome.Loading())
         try {
             val response = tmdbApi.getMovieDetail(id = id)
             if (response.isSuccessful) {

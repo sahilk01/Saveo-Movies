@@ -34,6 +34,6 @@ data class MovieDetail(
     }
 
     fun getTimeAndReleaseDate(): String {
-        return "R | ${getTime()} | ${release_date}}"
+        return "R | ${getTime()} | $release_date"
     }
 }
