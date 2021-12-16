@@ -15,6 +15,7 @@
         android:layout_height="match_parent">
 
         <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/blue_background"
@@ -36,8 +37,8 @@
             android:id="@+id/moveiInfo"
             style="@style/normalText"
             android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintStart_toStartOf="@+id/movieTitle"
             app:layout_constraintTop_toBottomOf="@+id/movieTitle"
             tools:text="R | 3h 7min | 30 dec, 2015" />
@@ -47,11 +48,22 @@
             style="@style/TitleTextBig"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{movie.original_title}"
             android:layout_marginStart="@dimen/margin_medium"
+            android:text="@{movie.original_title}"
             app:layout_constraintStart_toEndOf="@+id/poster"
             app:layout_constraintTop_toTopOf="@+id/guidelineTop"
             tools:text="Tarzan the wonder car" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_genre"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/moveiInfo"
+            app:layout_constraintTop_toBottomOf="@+id/moveiInfo" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineStart"
