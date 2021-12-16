@@ -4,4 +4,5 @@
     <dimen name="banner_item_width">280dp</dimen>
     <dimen name="banner_item_height">200dp</dimen>
     <dimen name="banner_item_radius">12dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
 </resources>
