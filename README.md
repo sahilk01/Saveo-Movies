@@ -25,5 +25,5 @@ khan.lesnar786@gmail.com
 
 ## Author
 
-ex. Sahil Khan
-ex. LinkedIn (https://www.linkedin.com/in/sahil-khan-63841a16a/?originalSubdomain=in)
+ Sahil Khan
+ LinkedIn (https://www.linkedin.com/in/sahil-khan-63841a16a/?originalSubdomain=in)
