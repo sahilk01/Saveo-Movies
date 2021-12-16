@@ -21,6 +21,8 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment2_to_movieDetailFragment"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom" />
     </fragment>
 </navigation>
