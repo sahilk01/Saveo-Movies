@@ -1,5 +1,7 @@
 package com.example.saveomovies.model.movie
 
+import java.io.Serializable
+
 data class Result(
     val adult: Boolean,
     val backdrop_path: String,
@@ -16,4 +18,13 @@ data class Result(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+) : Serializable {
+
+    fun getMovieRatingInString(): String {
+        return getMovieRating().toString().substring(0..2)
+    }
+
+    fun getMovieRating(): Float =
+        this.vote_average.toFloat() / 2
+
+}

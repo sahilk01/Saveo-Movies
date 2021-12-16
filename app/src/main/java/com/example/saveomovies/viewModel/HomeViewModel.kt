@@ -10,6 +10,8 @@ import com.example.saveomovies.model.movie.Result
 import com.example.saveomovies.network.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,13 +22,18 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
         emitSource(homeRepository.trendingMovies)
     }
 
+    val popularMoviesFlow = flow {
+        emitAll(homeRepository.getPopularMovies().cachedIn(viewModelScope))
+    }
+
+    init {
+        getTrendingMovies()
+    }
+
     fun getTrendingMovies() {
         viewModelScope.launch {
             homeRepository.getTrendingMovies()
         }
     }
 
-    fun getPopularMovies(): Flow<PagingData<Result>> {
-        return homeRepository.getPopularMovies().cachedIn(viewModelScope)
-    }
 }

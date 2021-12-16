@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.saveomovies.databinding.FragmentHomeBinding
 import com.example.saveomovies.model.Outcome
 import com.example.saveomovies.model.movie.Result
@@ -26,32 +28,44 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
+    private var binding: FragmentHomeBinding? = null
     private val homeViewModel: HomeViewModel by viewModels()
+    private var adapter: PopularMoviesAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        if (binding == null) {
+            binding = FragmentHomeBinding.inflate(inflater, container, false)
+        }
+        adapter = PopularMoviesAdapter(onItemClick = { movie ->
+            navigateToDetails(movie)
+        })
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         attachObservers()
-        homeViewModel.getTrendingMovies()
         getPopularMovies()
     }
 
+    private fun initViews() {
+        with(binding!!) {
+            if (this.popularRecyclerView.adapter == null) {
+                this.popularRecyclerView.adapter = adapter
+            }
+        }
+    }
+
     private fun getPopularMovies() {
-        val adapter = PopularMoviesAdapter()
-        binding.popularRecyclerView.adapter = adapter
 
         lifecycleScope.launch {
-            homeViewModel.getPopularMovies().collectLatest { movies ->
-                adapter.submitData(movies)
+            homeViewModel.popularMoviesFlow.collectLatest {
+                adapter?.submitData(it)
             }
         }
     }
@@ -59,27 +73,35 @@ class HomeFragment : Fragment() {
     private fun attachObservers() {
         homeViewModel.trendingMovies.observe(viewLifecycleOwner) {
             when (it) {
-                is Outcome.Failure -> handleError(it.throwable.localizedMessage, binding.root)
-                is Outcome.Loading -> binding.loader.visible()
+                is Outcome.Failure -> handleError(it.throwable.localizedMessage, binding!!.root)
+                is Outcome.Loading -> binding!!.loader.visible()
                 is Outcome.Success -> populateTrendingList(it.data)
             }
         }
     }
 
     private fun populateTrendingList(movies: List<Result>) {
-        binding.loader.gone()
-        with(binding.banner) {
+        binding!!.loader.gone()
+        with(binding!!.banner) {
             setItemTransformer(
                 ScaleTransformer.Builder()
                     .setMinScale(0.8f)
                     .build()
             )
             val wrapper = InfiniteScrollAdapter
-                .wrap(BannerAdapter(movies, onClick = {
-
+                .wrap(BannerAdapter(movies, onClick = { movie ->
+                    navigateToDetails(movie)
                 }))
 
             adapter = wrapper
         }
+    }
+
+    private fun navigateToDetails(movie: Result) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragment2ToMovieDetailFragment(
+                movie
+            )
+        )
     }
 }

@@ -2,7 +2,6 @@ package com.example.saveomovies.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,9 @@ import com.example.saveomovies.databinding.ItemPopularMovieBinding
 import com.example.saveomovies.model.movie.Result
 
 
-class PopularMoviesAdapter :
+class PopularMoviesAdapter(
+    private val onItemClick: (Result) -> Unit
+) :
     PagingDataAdapter<Result, PopularMoviesAdapter.PhotoViewHolder>(PhotoDiffCallBack()) {
 
 
@@ -33,7 +34,14 @@ class PopularMoviesAdapter :
     inner class PhotoViewHolder(private val binding: ItemPopularMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Result?) {
-            binding.movie = item
+            with(binding) {
+                movie = item
+                popularMovieImage.setOnClickListener {
+                    item?.let {
+                        onItemClick(it)
+                    }
+                }
+            }
         }
     }
 }

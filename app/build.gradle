@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -107,4 +108,7 @@ dependencies {
 
 //    Banner
     implementation 'com.yarolegovich:discrete-scrollview:1.5.1'
+
+    // Flexbox Layout
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }

@@ -8,10 +8,19 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.saveomovies.view.MovieDetailFragment"
-        android:label="fragment_movie_detail"
-        tools:layout="@layout/fragment_movie_detail" />
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movie"
+            app:argType="com.example.saveomovies.model.movie.Result" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment2"
         android:name="com.example.saveomovies.view.HomeFragment"
-        android:label="@string/app_name" />
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment2_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
 </navigation>
