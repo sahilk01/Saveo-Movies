@@ -1,5 +1,6 @@
 package com.example.saveomovies.di
 
+import com.example.saveomovies.network.FlowCallAdapterFactory
 import com.example.saveomovies.network.TMDBApi
 import com.example.saveomovies.util.BASE_URL
 import dagger.Module
@@ -56,6 +57,7 @@ object HttpModule {
             .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(converterFactory)
+            .addCallAdapterFactory(FlowCallAdapterFactory.create())
             .build()
     }
 

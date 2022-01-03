@@ -8,7 +8,9 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.saveomovies.databinding.FragmentHomeBinding
 import com.example.saveomovies.model.Outcome
@@ -22,6 +24,7 @@ import com.example.saveomovies.viewModel.HomeViewModel
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -71,12 +74,20 @@ class HomeFragment : Fragment() {
     }
 
     private fun attachObservers() {
-        homeViewModel.trendingMovies.observe(viewLifecycleOwner) {
-            when (it) {
-                is Outcome.Failure -> handleError(it.throwable.localizedMessage, binding!!.root)
-                is Outcome.Loading -> binding!!.loader.visible()
-                is Outcome.Success -> populateTrendingList(it.data)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.trendingMovies.collect {
+                    when (it) {
+                        is Outcome.Failure -> handleError(
+                            it.throwable.localizedMessage,
+                            binding!!.root
+                        )
+                        is Outcome.Loading -> binding!!.loader.visible()
+                        is Outcome.Success -> populateTrendingList(it.data)
+                    }
+                }
             }
+
         }
     }
 
